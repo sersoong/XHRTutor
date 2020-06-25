@@ -27,10 +27,10 @@ function getData()
 			var jsonData = JSON.parse(xmlhttp.responseText)
 
 			// 取消下面注释 打印查看格式化之后的json数组
-			// console.log(jsonData);
+			// console.log("返回值为:",jsonData);
 
 			// 打印返回的json数组的第一个数据
-			console.log(jsonData[0]);
+			console.log("返回值第一个数据为:",jsonData[0]);
 
 			// 将第一个数据的url对应的value填入img标签
 			document.getElementById("firstPhoto").src = jsonData[0].url;

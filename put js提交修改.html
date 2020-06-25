@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>post js提交</title>
+	<meta charset="utf-8">
+<script>
+// 获取数据
+function putData(data)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		// new一个XHR对象
+		xmlhttp=new XMLHttpRequest();
+	}
+	// XHR回调
+	xmlhttp.onreadystatechange=function()
+	{
+		// 判断返回状态码是否是200，RESTful规范：请求修改正确返回状态码200
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			// 默认返回的数据 xmlhttp.responseText 是文本
+			// 取消下面注释 打印查看返回的文本
+			// console.log(xmlhttp.responseText)
+
+			// 将返回的文本转化成json格式的数据
+			var jsonData = JSON.parse(xmlhttp.responseText)
+
+			// 取消下面注释 打印查看格式化之后的json数组
+			// 新增成功后,服务器返回新增的文章id
+			console.log("返回值为:",jsonData);
+			
+		}
+	}
+	// 新建一个PUT方式 修改文章的异步请求,拼接文章id到url后,用以更新指定id的文章数据
+	// 文章数据库结构如下:
+	//|----------------------------|
+	//| id | title | body | userId | 
+	//|----------------------------|
+
+	// 该文章接口的定义如下:
+	// GET	/posts 获取所有文章信息
+	// GET	/posts/:id  按id获取文章信息
+	// GET	/posts/:id/comments  按文章id获取文章评论
+	// GET	/comments?postId=:id 按文章id获取文章评论的另一种方式
+	// GET	/posts?userId=:id  按用户id获取文章评论
+	// POST	/posts	 		新增文章信息,文章信息用json方式或者formdata的方式集合,再以post方法提交
+	// PUT	/posts/:id        修改文章信息,按文章id修改指定文章的信息
+	// PATCH	/posts/:id    更新文章信息,同put
+	// DELETE	/posts/:id    按文章id删除文章
+
+	// 实例
+	// GET	/posts
+	// GET	/posts/1
+	// GET	/posts/1/comments
+	// GET	/comments?postId=1
+	// GET	/posts?userId=1
+	// POST	/posts
+	// PUT	/posts/1
+	// PATCH	/posts/1
+	// DELETE	/posts/1
+
+	xmlhttp.open("PUT","https://jsonplaceholder.typicode.com/posts/"+data.get("id"),true);
+
+	// 发送上面的请求
+	xmlhttp.send(data);
+}
+
+// 获取文章按钮的事件响应函数
+function getone() {
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		// new一个XHR对象
+		xmlhttp=new XMLHttpRequest();
+	}
+	// XHR回调
+	xmlhttp.onreadystatechange=function()
+	{
+		// 判断返回状态码是否是200，RESTful规范：请求新增正确返回状态码200
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			// 默认返回的数据 xmlhttp.responseText 是文本
+			// 取消下面注释 打印查看返回的文本
+			// console.log(xmlhttp.responseText)
+
+			// 将返回的文本转化成json格式的数据
+			var jsonData = JSON.parse(xmlhttp.responseText)
+
+			// 取消下面注释 打印查看格式化之后的json数据
+			// 新增成功后,服务器返回新增的文章id
+			console.log(jsonData);
+			
+			// 填充数据到页面,仅为演示,实际使用需要校验jsonData是否包含id title body三个key-value
+			document.getElementById("id").value = jsonData.id;
+			document.getElementById("title").value = jsonData.title;
+			document.getElementById("body").value = jsonData.body;
+		}
+	}
+	// 新建一个GET方式 获取id为1的那篇文章的信息
+	xmlhttp.open("GET","https://jsonplaceholder.typicode.com/posts/1",true);
+
+	// 发送上面的请求
+	xmlhttp.send();
+}
+
+// 提交按钮的响应事件
+function submit() {
+	// 获取用户输入内容的表单
+	var form = document.getElementById("form");
+
+	// 建立表单数据对象
+	var formdata = new FormData(form);
+	// 打印获取到的内容
+	console.log("id的值为:",formdata.get("id"));
+	console.log("title的值为:",formdata.get("title"));
+	console.log("body的值为:",formdata.get("body"));
+
+	// 调用提交数据方法
+	putData(formdata);
+}
+</script>
+</head>
+<body>
+	<div><h2>提交文章测试</h2></div>
+	<div style="width: 500px">
+		<form action="" method="POST" id="form">
+		<label for="id">文章id</label>
+		<br>
+		<input type="text" id="id" name="id"/>
+		<br>
+		<label for="title">文章标题</label>
+		<br>
+		<input type="text" id="title" name="title" />
+		<br>
+		<div style="margin-bottom: 30px;"></div>
+		<label for="body" >文章内容</label>
+		<br>
+		<textarea name="body" id="body" cols="30" rows="10"></textarea>
+		<br>
+		
+		</form>
+		<button onclick="getone()">获取id为1的文章信息</button>
+		<button onclick="submit()">提交修改</button>
+	</div>
+</body>
+</html>
