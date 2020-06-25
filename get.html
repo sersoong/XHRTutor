@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+// 获取数据
+function getData()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		// new一个XHR对象
+		xmlhttp=new XMLHttpRequest();
+	}
+	// XHR回调
+	xmlhttp.onreadystatechange=function()
+	{
+		// 判断返回状态码是否是200，RESTful规范：请求正确返回状态码200
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			// 默认返回的数据 xmlhttp.responseText 是文本
+			// 取消下面注释 打印查看返回的文本
+			// console.log(xmlhttp.responseText)
+
+			// 将返回的文本转化成json格式的数据
+			var jsonData = JSON.parse(xmlhttp.responseText)
+
+			// 取消下面注释 打印查看格式化之后的json数组
+			// console.log(jsonData);
+
+			// 打印返回的json数组的第一个数据
+			console.log(jsonData[0]);
+
+			// 将第一个数据的url对应的value填入img标签
+			document.getElementById("firstPhoto").src = jsonData[0].url;
+
+			// 将第一个数据的title填入到h3标签
+			document.getElementById("title").innerText = jsonData[0].title;
+			
+		}
+	}
+	// 新建一个GET方式图片请求
+	xmlhttp.open("GET","https://jsonplaceholder.typicode.com/photos",true);
+	// 发送上面的请求
+	xmlhttp.send();
+}
+</script>
+</head>
+<body>
+<div><h2>获取图片信息测试</h2></div>
+<div>
+	<h3 id="title">图片的标题</h3>
+	<img id="firstPhoto" src="">
+</div>
+<button type="button" onclick="getData()">获取图片</button>
+</body>
+</html>
