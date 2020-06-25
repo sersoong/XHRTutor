@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>post传统表单提交</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<div><h2>提交文章测试</h2></div>
+<div style="width: 500px">
+	<!-- 用form表单提交数据 -->
+	<form action="https://jsonplaceholder.typicode.com/photos" method="POST" >
+		<label for="title">文章标题</label>
+		<br>
+		<input type="text" id="title" name="title" />
+		<br>
+		<div style="margin-bottom: 30px;"></div>
+		<label for="body" >文章内容</label>
+		<br>
+		<textarea name="body" id="body" cols="30" rows="10"></textarea>
+		<br>
+		<input type="submit" value="提交">
+	</form>
+</div>
+</body>
+</html>

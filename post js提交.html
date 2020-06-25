@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>post js提交</title>
+	<meta charset="utf-8">
+<script>
+// 获取数据
+function postData(data)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		// new一个XHR对象
+		xmlhttp=new XMLHttpRequest();
+	}
+	// XHR回调
+	xmlhttp.onreadystatechange=function()
+	{
+		// 判断返回状态码是否是201，RESTful规范：请求新增正确返回状态码201
+		if (xmlhttp.readyState==4 && xmlhttp.status==201)
+		{
+			// 默认返回的数据 xmlhttp.responseText 是文本
+			// 取消下面注释 打印查看返回的文本
+			// console.log(xmlhttp.responseText)
+
+			// 将返回的文本转化成json格式的数据
+			var jsonData = JSON.parse(xmlhttp.responseText)
+
+			// 取消下面注释 打印查看格式化之后的json数组
+			// 新增成功后,服务器返回新增的文章id
+			console.log(jsonData);
+			
+		}
+	}
+	// 新建一个POST方式 新增文章的异步请求
+	xmlhttp.open("POST","https://jsonplaceholder.typicode.com/posts",true);
+	// 发送上面的请求
+	xmlhttp.send(data);
+}
+
+// 提交按钮的响应事件
+function submit() {
+	// 获取用户输入内容的表单
+	var form = document.getElementById("form");
+
+	// 建立表单数据对象
+	var formdata = new FormData(form);
+	// 打印获取到的内容
+	console.log("title的值为:",formdata.get("title"));
+	console.log("body的值为:",formdata.get("body"));
+
+	// 调用提交数据方法
+	postData(formdata);
+}
+</script>
+</head>
+<body>
+	<div><h2>提交文章测试</h2></div>
+	<div style="width: 500px">
+		<form action="" method="POST" id="form">
+		<label for="title">文章标题</label>
+		<br>
+		<input type="text" id="title" name="title" />
+		<br>
+		<div style="margin-bottom: 30px;"></div>
+		<label for="body" >文章内容</label>
+		<br>
+		<textarea name="body" id="body" cols="30" rows="10"></textarea>
+		<br>
+		
+		</form>
+		<button onclick="submit()">提交</button>
+	</div>
+</body>
+</html>
